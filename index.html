@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRMN - Pipeline Hub</title>
+<style>
+  :root {
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --text-strong: #0f172a;
+    --border: #e2e8f0;
+    --border-strong: #cbd5e1;
+    --accent: #1d4ed8;
+    --accent-hover: #1e40af;
+    --accent-light: #3b82f6;
+    --accent-soft: #eff6ff;
+    --accent-softer: #dbeafe;
+    --accent-text: #1e3a8a;
+    --chip-bg: #f1f5f9;
+    --chip-text: #475569;
+    --header-bg: #ffffff;
+    --footer-bg: #f1f5f9;
+    --hero-bg-1: #dbeafe;
+    --hero-bg-2: #ffffff;
+    --hero-pattern: rgba(29, 78, 216, 0.04);
+    --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.03);
+    --shadow-hover: 0 8px 24px rgba(29, 78, 216, 0.10), 0 2px 6px rgba(29, 78, 216, 0.06);
+  }
+  [data-theme="dark"] {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --text: #e2e8f0;
+    --text-muted: #94a3b8;
+    --text-strong: #f8fafc;
+    --border: #334155;
+    --border-strong: #475569;
+    --accent: #60a5fa;
+    --accent-hover: #93c5fd;
+    --accent-light: #93c5fd;
+    --accent-soft: #1e3a8a;
+    --accent-softer: #1e40af;
+    --accent-text: #bfdbfe;
+    --chip-bg: #334155;
+    --chip-text: #cbd5e1;
+    --header-bg: #1e293b;
+    --footer-bg: #0f172a;
+    --hero-bg-1: #1e3a8a;
+    --hero-bg-2: #0f172a;
+    --hero-pattern: rgba(96, 165, 250, 0.06);
+    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-hover: 0 8px 24px rgba(96, 165, 250, 0.20);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; transition: color 0.15s; }
+  a:hover { color: var(--accent-hover); text-decoration: underline; }
+
+  /* Top bar */
+  .topbar {
+    background: var(--header-bg);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(8px);
+    background-color: rgba(255, 255, 255, 0.92);
+  }
+  [data-theme="dark"] .topbar { background-color: rgba(30, 41, 59, 0.92); }
+  .topbar-brand {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--accent);
+  }
+  .topbar-controls {
+    display: flex;
+    gap: 4px;
+    background: var(--chip-bg);
+    border-radius: 8px;
+    padding: 3px;
+  }
+  .theme-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+  .theme-btn.active {
+    background: var(--card);
+    color: var(--text-strong);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+  }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, var(--hero-bg-1) 0%, var(--hero-bg-2) 70%);
+    padding: 88px 32px 72px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--hero-pattern) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-inner { max-width: 1000px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 22px;
+    padding: 6px 14px;
+    background: var(--accent-soft);
+    border-radius: 100px;
+    border: 1px solid var(--accent-softer);
+  }
+  .hero-eyebrow .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .hero h1 {
+    font-size: 56px;
+    font-weight: 800;
+    color: var(--text-strong);
+    line-height: 1.05;
+    margin: 0 0 16px;
+    letter-spacing: -1px;
+  }
+  .hero h1 .accent {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-style: italic;
+  }
+  .hero-tagline {
+    font-size: 20px;
+    color: var(--accent);
+    font-style: italic;
+    margin: 0 0 28px;
+    font-weight: 500;
+  }
+  .hero-desc {
+    font-size: 16px;
+    color: var(--text);
+    max-width: 760px;
+    margin: 0 0 32px;
+    line-height: 1.65;
+  }
+  .hero-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 20px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid var(--border-strong);
+    background: var(--card);
+    color: var(--text-strong);
+    transition: all 0.18s;
+    box-shadow: var(--shadow-card);
+  }
+  .btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    text-decoration: none;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-hover);
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+  .btn-primary:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+    color: white;
+  }
+  .btn-icon { font-size: 14px; transition: transform 0.18s; }
+  .btn:hover .btn-icon { transform: translate(2px, -2px); }
+
+  /* Section */
+  .section { padding: 64px 32px; max-width: 1100px; margin: 0 auto; }
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 28px;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 14px;
+    position: relative;
+  }
+  .section-head::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background: var(--accent);
+  }
+  .section-title {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--text-strong);
+    margin: 0;
+    letter-spacing: -0.3px;
+  }
+  .section-eyebrow {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 600;
+    letter-spacing: 2px;
+  }
+
+  /* Grid */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+
+  /* Card */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px 26px;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-card);
+  }
+  .card:hover {
+    border-color: var(--accent);
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+  }
+  .card-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+  }
+  .card-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text-strong);
+    margin: 0 0 10px;
+    line-height: 1.3;
+  }
+  .card-desc {
+    font-size: 13.5px;
+    color: var(--text);
+    line-height: 1.6;
+    margin: 0 0 16px;
+    flex-grow: 1;
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 16px;
+  }
+  .chip {
+    background: var(--chip-bg);
+    color: var(--chip-text);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 4px;
+  }
+  .card-link {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: auto;
+    transition: gap 0.18s;
+  }
+  .card-link:hover { gap: 8px; text-decoration: none; }
+
+  /* Inline content block */
+  .block {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 30px 34px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-card);
+  }
+  .block-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-strong);
+    margin: 0 0 14px;
+  }
+  .block p {
+    font-size: 14.5px;
+    color: var(--text);
+    margin: 0 0 12px;
+    line-height: 1.65;
+  }
+  .block p:last-child { margin-bottom: 0; }
+  .block strong { color: var(--text-strong); }
+
+  /* Two-col text */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .col-block {
+    background: var(--accent-soft);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 10px 10px 0;
+    padding: 20px 24px;
+    transition: transform 0.18s;
+  }
+  .col-block:hover { transform: translateX(2px); }
+  .col-block h4 {
+    font-size: 13px;
+    color: var(--accent-text);
+    font-weight: 700;
+    margin: 0 0 8px;
+    letter-spacing: 0.3px;
+  }
+  [data-theme="dark"] .col-block h4 { color: var(--accent-light); }
+  .col-block p {
+    font-size: 13px;
+    color: var(--text);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* Sources strip */
+  .sources {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .source-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--card);
+    border: 1px solid var(--border-strong);
+    color: var(--text);
+    padding: 7px 13px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.18s;
+  }
+  .source-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    text-decoration: none;
+    background: var(--accent-soft);
+    transform: translateY(-1px);
+  }
+  .source-btn::after {
+    content: "↗";
+    font-size: 11px;
+    color: var(--text-muted);
+    transition: transform 0.18s;
+  }
+  .source-btn:hover::after {
+    color: var(--accent);
+    transform: translate(2px, -2px);
+  }
+
+  /* Pipeline lead card */
+  .lead {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 10px;
+    padding: 22px 26px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow-card);
+    transition: all 0.2s;
+  }
+  .lead:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateX(2px);
+  }
+  .lead-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .lead-name {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text-strong);
+    line-height: 1.3;
+  }
+  .lead-name .ticker {
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-left: 8px;
+    font-size: 13px;
+  }
+  .lead-score {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+    color: white;
+    padding: 5px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(29, 78, 216, 0.20);
+  }
+  .lead-meta {
+    font-size: 13px;
+    color: var(--text);
+    margin: 6px 0;
+  }
+  .lead-meta strong { color: var(--text-strong); }
+  .lead-row {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    margin: 5px 0;
+    line-height: 1.6;
+  }
+  .lead-row strong { color: var(--text); }
+  .lead-row a { color: var(--accent); font-weight: 500; }
+  .lead-angle {
+    background: var(--accent-soft);
+    color: var(--text);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 13px;
+    font-style: italic;
+    line-height: 1.6;
+    border-left: 3px solid var(--accent);
+  }
+  .lead-angle::before {
+    content: "Suggested angle";
+    font-weight: 700;
+    font-style: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 10px;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 6px;
+  }
+  [data-theme="dark"] .lead-angle { color: var(--text); }
+
+  /* CTA Footer */
+  .cta {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+    color: white;
+    padding: 56px 32px;
+    text-align: center;
+    margin-top: 24px;
+  }
+  .cta h2 {
+    color: white;
+    font-size: 28px;
+    font-weight: 800;
+    margin: 0 0 12px;
+    letter-spacing: -0.3px;
+  }
+  .cta p {
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 16px;
+    max-width: 560px;
+    margin: 0 auto 24px;
+  }
+  .cta-btn {
+    display: inline-block;
+    background: white;
+    color: var(--accent);
+    padding: 13px 28px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.18s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  .cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.20);
+    text-decoration: none;
+  }
+
+  /* Footer */
+  .footer {
+    background: var(--footer-bg);
+    padding: 28px 32px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .footer-meta { margin-top: 6px; font-size: 11px; }
+
+  @media (max-width: 760px) {
+    .grid, .grid-3, .two-col { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 36px; }
+    .section { padding: 44px 20px; }
+    .hero { padding: 56px 20px 44px; }
+    .cta { padding: 44px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-brand">TRIDENTRISE</div>
+  <div class="topbar-controls" role="group" aria-label="Theme">
+    <button class="theme-btn" data-theme-set="light">Light</button>
+    <button class="theme-btn" data-theme-set="dark">Dark</button>
+    <button class="theme-btn active" data-theme-set="system">System</button>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><span class="dot"></span> PIPELINE HUB &middot; PRmediaNow</div>
+    <h1>PRmediaNow <span class="accent">&times;</span> TridentRise</h1>
+    <div class="hero-tagline">AI is the lever. Trust is the edge.</div>
+    <p class="hero-desc">
+      One place for everything &mdash; methodology, calibrated ICP, sample pipeline, and the build plan for PRmediaNow's new lead-generation channel. Built on the TridentRise platform, configured for PRmediaNow's junior-mining and microcap public-company practice.
+    </p>
+    <div class="hero-buttons">
+      <a class="btn btn-primary" href="https://www.prmedianow.com/" target="_blank" rel="noopener">PRmediaNow website <span class="btn-icon">↗</span></a>
+      <a class="btn" href="https://tridentrise.com/" target="_blank" rel="noopener">TridentRise website <span class="btn-icon">↗</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <h2 class="section-title">Context</h2>
+    <div class="section-eyebrow">PROJECT FRAMING</div>
+  </div>
+
+  <div class="block">
+    <div class="block-title">The opportunity</div>
+    <p>
+      PRmediaNow Communications is a North-American PR firm specializing in earned media coverage and owned video content for publicly traded and private companies. The practice has built its reputation on broadcast relationships and a portfolio of award-winning campaigns across the small-cap public-company market.
+    </p>
+    <p>
+      The TridentRise build adds a systematic pipeline for surfacing newly-active small-cap companies that fit PRmediaNow's practice focus &mdash; a complement to the relationship-driven channels PRmediaNow has long relied on.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <h2 class="section-title">Approach</h2>
+    <div class="section-eyebrow">METHODOLOGY &middot; SIGNAL MODEL</div>
+  </div>
+
+  <div class="block">
+    <div class="block-title">The intent-signal approach</div>
+    <p>
+      Most lead-detection systems scan for companies that recently raised money. That signal is noisy &mdash; a company that closed a financing 90 days ago might or might not be ready to spend on awareness. The sharper signal is whether the company is <strong>already spending</strong> on awareness today. Four observable triggers:
+    </p>
+    <div class="two-col">
+      <div class="col-block">
+        <h4>SIGNAL 1 &mdash; IR firm hire announcements</h4>
+        <p>A company that just engaged investor relations is in awareness-buying mode. PR is the logical next vendor.</p>
+      </div>
+      <div class="col-block">
+        <h4>SIGNAL 2 &mdash; Marketing / digital agency hire</h4>
+        <p>Same pattern. Money is flowing toward visibility. PRmediaNow slots into the awareness stack.</p>
+      </div>
+      <div class="col-block">
+        <h4>SIGNAL 3 &mdash; Paid YouTube segment appearance</h4>
+        <p>The company is already paying a digital agency for awareness. PR is a natural addition to their existing spend.</p>
+      </div>
+      <div class="col-block">
+        <h4>SIGNAL 4 &mdash; Broker-paid research initiation</h4>
+        <p>Another commercial-spending signal. The company is investing in its capital-markets story.</p>
+      </div>
+    </div>
+    <p style="margin-top: 16px;">
+      The PRmediaNow engine, built by TridentRise, scans the following sources for these signals every cycle:
+    </p>
+    <div class="sources">
+      <a class="source-btn" href="https://www.newsfilecorp.com/" target="_blank" rel="noopener">Newsfile Corp</a>
+      <a class="source-btn" href="https://www.globenewswire.com/" target="_blank" rel="noopener">GlobeNewswire</a>
+      <a class="source-btn" href="https://www.businesswire.com/" target="_blank" rel="noopener">BusinessWire</a>
+      <a class="source-btn" href="https://www.accesswire.com/" target="_blank" rel="noopener">AccessWire</a>
+      <a class="source-btn" href="https://www.sedarplus.ca/" target="_blank" rel="noopener">SEDAR+</a>
+      <a class="source-btn" href="https://www.juniorminingnetwork.com/" target="_blank" rel="noopener">Junior Mining Network</a>
+      <a class="source-btn" href="https://stockhouse.com/" target="_blank" rel="noopener">Stockhouse</a>
+      <a class="source-btn" href="https://www.stockwatch.com/" target="_blank" rel="noopener">Stockwatch</a>
+      <a class="source-btn" href="https://www.proactiveinvestors.com/" target="_blank" rel="noopener">Proactive Investors</a>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-label">CALIBRATED ICP</div>
+      <div class="card-title">PRmediaNow ICP</div>
+      <div class="card-desc">
+        The companies the engine is built to surface and engage. Tuned to PRmediaNow's practice focus: junior mining and microcap public companies across AI infrastructure, rare earths and critical minerals, natural hydrogen, nuclear and clean energy, space and aerospace, defense supply chains, battery materials, and cybersecurity.
+      </div>
+      <div class="chips"><span class="chip">Junior Mining</span><span class="chip">Critical Minerals</span><span class="chip">AI Infrastructure</span><span class="chip">Microcap</span></div>
+      <a class="card-link" href="PRMN-ICP.pdf" target="_blank" rel="noopener">→ Open ICP</a>
+    </div>
+
+    <div class="card">
+      <div class="card-label">WORKFLOW</div>
+      <div class="card-title">Engine workflow diagram</div>
+      <div class="card-desc">
+        Visual map of how intent signals move from public sources into a biweekly briefing email delivered to PRmediaNow &mdash; with a feedback loop that retunes the engine from each reply.
+      </div>
+      <div class="chips"><span class="chip">Workflow</span><span class="chip">Sources</span><span class="chip">Feedback Loop</span></div>
+      <a class="card-link" href="PRMN-Workflow-Diagram.svg" target="_blank" rel="noopener">→ Open workflow diagram</a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <h2 class="section-title">What we've built</h2>
+    <div class="section-eyebrow">DELIVERABLES &middot; TOOLS</div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-label">DIAGNOSTIC</div>
+      <div class="card-title">PRmediaNow Engagement Diagnostic</div>
+      <div class="card-desc">
+        The six components of the build &mdash; ICP &amp; market mapping, CRM, outbound lead generation, qualification, visibility dashboard, and voice &amp; messaging &mdash; mapped to PRmediaNow's specific situation. Five are confirmed in scope; CRM is a decision PRmediaNow makes as lead flow begins.
+      </div>
+      <div class="chips"><span class="chip">Diagnostic</span><span class="chip">Six Components</span><span class="chip">PRMN Scope</span></div>
+      <a class="card-link" href="PRMN-Engagement-Diagnostic.pdf" target="_blank" rel="noopener">→ Open diagnostic</a>
+    </div>
+
+    <div class="card">
+      <div class="card-label">DASHBOARD PREVIEW</div>
+      <div class="card-title">PRmediaNow visibility dashboard</div>
+      <div class="card-desc">
+        Working preview of the PRmediaNow dashboard &mdash; a read-only view showing what the engine has found, where each lead came from, and how the engine is currently calibrated. Refreshes on the briefing cadence. Open from any browser, no login required.
+      </div>
+      <div class="chips"><span class="chip">Dashboard</span><span class="chip">Visibility</span><span class="chip">No Login</span></div>
+      <a class="card-link" href="PRMN-Portal-Mockup.html" target="_blank" rel="noopener">→ Open dashboard preview</a>
+    </div>
+
+    <div class="card">
+      <div class="card-label">BUILD PLAN</div>
+      <div class="card-title">PRmediaNow Build Plan</div>
+      <div class="card-desc">
+        How the build sequences across approximately four weeks &mdash; what gets configured, what gets delivered each milestone, what PRmediaNow provides, and how the service stages organize beyond the initial build.
+      </div>
+      <div class="chips"><span class="chip">Build Plan</span><span class="chip">Milestones</span><span class="chip">Service Stages</span></div>
+      <a class="card-link" href="PRMN-Build-Plan.pdf" target="_blank" rel="noopener">→ Open build plan</a>
+    </div>
+
+    <div class="card">
+      <div class="card-label">REFERENCE</div>
+      <div class="card-title">Service Model &amp; Investment</div>
+      <div class="card-desc">
+        Stand-alone reference document outlining how TridentRise services are structured across four stages, what each stage covers, and the standard investment for each. Includes the adjusted terms specific to PRmediaNow as the inaugural engagement.
+      </div>
+      <div class="chips"><span class="chip">Reference</span><span class="chip">Service Stages</span><span class="chip">Stand-alone</span></div>
+      <a class="card-link" href="TR-Service-Model.pdf" target="_blank" rel="noopener">→ Open service model</a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <h2 class="section-title">Sample pipeline</h2>
+    <div class="section-eyebrow">SIX LIVE CANDIDATES &middot; SCORED &middot; READY TO REACH OUT</div>
+  </div>
+
+  <div class="block">
+    <div class="block-title">What you are looking at</div>
+    <p>
+      Six real public companies, surfaced this week from live intent signals across press release wires, broker-paid research feeds, exchange filings, and Proactive Investors features. Each candidate matches PRmediaNow's calibrated ICP, has been verified against public sources, scored against the rubric (ICP fit &times; Need &times; Reach &times; Timing), and paired with a suggested outreach angle in PRmediaNow's voice. <strong>This is the same output the engine produces every other Monday once live &mdash; same enrichment depth, same scoring, same voice, just automated and on cadence. Cadence and volume are adjustable as PRmediaNow runs with the engine.</strong>
+    </p>
+  </div>
+
+  <div class="lead">
+    <div class="lead-head">
+      <div>
+        <span class="lead-name">REV Exploration Corp. <span class="ticker">TSXV: REVX &middot; OTC: REVFF</span></span>
+      </div>
+      <span class="lead-score">9 / 10</span>
+    </div>
+    <div class="lead-meta">
+      <strong>Natural hydrogen &amp; helium</strong> &middot; Western Canada (Saskatchewan, Alberta) + Western US (Montana) &middot; CEO: Jordan Potts
+    </div>
+    <div class="lead-row">
+      <strong>Intent signal:</strong> May 22, 2026 &mdash; closed strategic $4M private placement with <strong>Eric Sprott</strong> at $0.95/unit, on top of January $5.8M Sprott raise and February Hampton Securities advisory agreement. Sprott now holds >10% of issued shares. (<a href="https://www.globenewswire.com/news-release/2026/05/22/3300027/0/en/REV-Arranges-4-Million-Private-Placement-with-Eric-Sprott.html" target="_blank" rel="noopener">Source ↗</a>)
+    </div>
+    <div class="lead-row">
+      <strong>Warm path:</strong> REV holds ~$15.6M in MAX Power Mining shares (CSE: MAXX) and is positioned alongside MAX Power on the Saskatchewan natural-hydrogen discovery story. MAX Power is a current PRmediaNow client.
+    </div>
+    <div class="lead-row">
+      <strong>Score breakdown:</strong> ICP 10 &middot; Need 8 &middot; Reach 10 &middot; Timing 10
+    </div>
+    <div class="lead-angle">
+      Saw the May Sprott placement land on the back of the natural-hydrogen story. With the Aden Dome drilling moving forward and the MAX Power connection on Canada's first-ever natural hydrogen discovery, there's a twelve-month catalyst arc that benefits from a media wrapper. Worth 15 minutes to discuss broadcast and trade coverage on the hydrogen narrative, and the Cyndi Edwards CEO interview format for shareholder content.
+    </div>
+  </div>
+
+  <div class="lead">
+    <div class="lead-head">
+      <div>
+        <span class="lead-name">Foremost Clean Energy Ltd. <span class="ticker">NASDAQ: FMST &middot; CSE: FAT</span></span>
+      </div>
+      <span class="lead-score">8 / 10</span>
+    </div>
+    <div class="lead-meta">
+      <strong>Uranium &middot; nuclear / clean energy</strong> &middot; Saskatchewan (Athabasca Basin) + Manitoba &middot; Market cap ~C$24-34M &middot; CEO: Jason Barnard
+    </div>
+    <div class="lead-row">
+      <strong>Intent signal:</strong> January 2026 &mdash; engaged <strong>RedChip Companies</strong> to lead investor relations and strategic communications (multi-channel IR program including digital distribution, investor webinars, roadshows, and Small Stocks Big Money TV). Live investor webinar scheduled for June 3, 2026. (<a href="https://www.juniorminingnetwork.com/junior-miner-news/press-releases/2021-cse/fat/195106-foremost-clean-energy-engages-redchip-companies-to-lead-investor-relations-efforts.html" target="_blank" rel="noopener">Source ↗</a>)
+    </div>
+    <div class="lead-row">
+      <strong>Active program:</strong> C$9M 2026 exploration program centered on Athabasca uranium assets, with a 70% option from Denison Mines on 330,000+ acres.
+    </div>
+    <div class="lead-row">
+      <strong>Score breakdown:</strong> ICP 9 &middot; Need 6 &middot; Reach 7 &middot; Timing 9
+    </div>
+    <div class="lead-angle">
+      RedChip is running the digital story for FMST. The next layer is broadcast and trade media coverage on the uranium-to-AI-power thesis &mdash; nuclear policy plus Athabasca means the narrative wants a media wrapper that the digital channel cannot replicate. With the June 3 investor webinar coming and the C$9M Athabasca push live, fifteen minutes is enough to walk through what PRmediaNow adds on top of the RedChip program.
+    </div>
+  </div>
+
+  <div class="lead">
+    <div class="lead-head">
+      <div>
+        <span class="lead-name">RZOLV Technologies Inc. <span class="ticker">TSXV: RZL</span></span>
+      </div>
+      <span class="lead-score">8 / 10</span>
+    </div>
+    <div class="lead-meta">
+      <strong>Critical minerals &amp; rare earths (clean-tech extraction)</strong> &middot; HQ: North Vancouver &middot; Market cap ~C$24M
+    </div>
+    <div class="lead-row">
+      <strong>Intent signal:</strong> February 24, 2026 &mdash; one-year investor relations agreement with <strong>San Diego Torrey Hills Capital</strong>. April 2026 strategic partnership with EMEW Clean Technologies for integrated precious + critical-metal recovery. New TSXV listing as of October 2025. (<a href="https://investingnews.com/rzolv-technologies-engages-san-diego-torrey-hills-capital-for-investor-relations/" target="_blank" rel="noopener">Source ↗</a>)
+    </div>
+    <div class="lead-row">
+      <strong>Story hook:</strong> Non-toxic water-based reagent extracts gold + 20+ critical and rare-earth elements (Nd, Pr, Dy) from ores, concentrates, and tailings. Plays directly to the magnet-metals narrative.
+    </div>
+    <div class="lead-row">
+      <strong>Score breakdown:</strong> ICP 9 &middot; Need 7 &middot; Reach 6 &middot; Timing 8
+    </div>
+    <div class="lead-angle">
+      The EMEW partnership and the critical-minerals expansion put RZL in a story trade and broadcast media will engage on right now &mdash; magnet metals, REE supply chain, clean-tech extraction. Torrey Hills is handling the IR side; the next layer is media coverage and a Cyndi Edwards interview-format video walking through the cleantech extraction story for shareholders and prospective partners. Worth fifteen minutes to see if PRmediaNow fits the next phase.
+    </div>
+  </div>
+
+  <div class="lead">
+    <div class="lead-head">
+      <div>
+        <span class="lead-name">Fredonia Mining Inc. <span class="ticker">TSXV: FRED &middot; OTC: FREDF</span></span>
+      </div>
+      <span class="lead-score">7 / 10</span>
+    </div>
+    <div class="lead-meta">
+      <strong>Gold &amp; silver exploration (junior mining)</strong> &middot; Santa Cruz, Argentina (El Dorado-Monserrat) &middot; Market cap ~C$34M
+    </div>
+    <div class="lead-row">
+      <strong>Intent signal:</strong> March 24-25, 2026 &mdash; engaged <strong>TLG Growth Capital Corp.</strong> and <strong>Outcrop Mining Capital Corp.</strong> as investor relations and capital markets strategy advisors (6-month term), plus engaged <strong>ICP Securities Inc.</strong> for automated market making. Triple-vendor awareness push. (<a href="https://www.globenewswire.com/news-release/2026/03/25/3262095/0/en/Fredonia-Mining-Inc-Engages-ICP-Securities-Inc-for-Automated-Market-Making-Services-and-Enters-Into-Investor-Relations-and-Capital-Markets-Advisory-Agreement.html" target="_blank" rel="noopener">Source ↗</a>)
+    </div>
+    <div class="lead-row">
+      <strong>Score breakdown:</strong> ICP 6 &middot; Need 8 &middot; Reach 6 &middot; Timing 8
+    </div>
+    <div class="lead-angle">
+      With new IR/capital markets advisors signed and the market-making piece covered by ICP Securities, FRED is clearly in awareness-buying mode. The Santa Cruz gold/silver story plays for trade and broadcast media, and the Cyndi Edwards interview format gives shareholders a piece they can share. Fifteen minutes to walk through what PRmediaNow adds to the existing program?
+    </div>
+  </div>
+
+  <div class="lead">
+    <div class="lead-head">
+      <div>
+        <span class="lead-name">Daura Gold Corp. <span class="ticker">TSXV: DGC &middot; OTCQB: DGCOF</span></span>
+      </div>
+      <span class="lead-score">7 / 10</span>
+    </div>
+    <div class="lead-meta">
+      <strong>Gold &amp; silver exploration (junior mining)</strong> &middot; South America assets &middot; Toronto-based IR
+    </div>
+    <div class="lead-row">
+      <strong>Intent signal:</strong> April 8, 2026 &mdash; engaged <strong>Kaitlin Taylor</strong> as third-party investor relations consultant (6-month term, $8,000/month + 150,000 options). Taylor brings mining-sector IR experience. (<a href="https://www.newsfilecorp.com/release/291432/Daura-Gold-Corp.-Engages-Investor-Relations-Consultant" target="_blank" rel="noopener">Source ↗</a>)
+    </div>
+    <div class="lead-row">
+      <strong>Score breakdown:</strong> ICP 7 &middot; Need 7 &middot; Reach 6 &middot; Timing 8
+    </div>
+    <div class="lead-angle">
+      Kaitlin Taylor stepping in on IR is a strong start &mdash; the next layer is earned media coverage that gives shareholders something to point at and that builds the South America gold story across trade and broadcast. PRmediaNow has placed junior gold/silver exploration stories on national TV. Fifteen minutes to see if there is a fit?
+    </div>
+  </div>
+
+  <div class="lead">
+    <div class="lead-head">
+      <div>
+        <span class="lead-name">American Resources Corp. <span class="ticker">NASDAQ: AREC</span></span>
+      </div>
+      <span class="lead-score">7 / 10</span>
+    </div>
+    <div class="lead-meta">
+      <strong>Rare earth &amp; critical mineral supply chain</strong> &middot; US-listed &middot; Market cap ~US$235M &middot; CEO: Mark Jensen
+    </div>
+    <div class="lead-row">
+      <strong>Intent signal:</strong> Multiple featured segments on <strong>Proactive Investors</strong> in the last 60 days &mdash; coverage on the rare-earth pivot, Mitsubishi partnership, Q1 results, and CEO-led strategy commentary. Proactive Investors features are paid placements, signaling active awareness spend right now. (<a href="https://www.proactiveinvestors.com/companies/news/1092614/american-resources-completes-pivots-to-rare-earth-supply-chain-reports-strong-balance-sheet-1092614.html" target="_blank" rel="noopener">Source ↗</a>)
+    </div>
+    <div class="lead-row">
+      <strong>Story hook:</strong> Just completed a multi-year pivot from metallurgical coal into rare-earth and critical-mineral supply chain. Mitsubishi Materials strategic partnership. Q1 net income of US$44.4M. Narrative-reset story tailor-made for broadcast and trade media.
+    </div>
+    <div class="lead-row">
+      <strong>Score breakdown:</strong> ICP 7 &middot; Need 7 &middot; Reach 5 &middot; Timing 9
+    </div>
+    <div class="lead-angle">
+      The coal-to-rare-earths pivot is a national-story arc &mdash; not just a sector update. Proactive Investors is moving the digital piece; the next layer is broadcast and trade press on the Mitsubishi partnership and the domestic supply-chain narrative. The Cyndi Edwards interview format gives Mark Jensen a way to tell the transformation story to the audience that holds the stock. Fifteen minutes to walk through what PRmediaNow adds.
+    </div>
+  </div>
+
+  <div class="block" style="margin-top: 20px; background: var(--accent-soft); border-color: var(--accent);">
+    <div class="block-title" style="color: var(--accent-text);">After the briefing: outreach options</div>
+    <p>
+      Once a candidate is approved, the outreach itself is PRmediaNow's call. Three patterns work depending on the relationship and TridentRise's role at the time:
+    </p>
+    <div class="two-col" style="margin-top: 10px; grid-template-columns: repeat(3, 1fr);">
+      <div class="col-block">
+        <h4>PRmediaNow reaches out</h4>
+        <p>The engine surfaces and prepares. PRmediaNow's principal sends the suggested angle as the principal-to-principal note.</p>
+      </div>
+      <div class="col-block">
+        <h4>TridentRise reaches out</h4>
+        <p>Where appropriate, TridentRise sends the first note using a delegated address &mdash; useful when the principal's time is the constraint.</p>
+      </div>
+      <div class="col-block">
+        <h4>Hybrid</h4>
+        <p>TridentRise sends the initial outreach; the principal joins the conversation once interest is confirmed. Common pattern for warm-path candidates.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <h2 class="section-title">What's next</h2>
+    <div class="section-eyebrow">FROM SIGN-OFF TO FIRST BRIEFING</div>
+  </div>
+
+  <div class="grid-3 grid">
+    <div class="card">
+      <div class="card-label">MILESTONE 1</div>
+      <div class="card-title">Configure</div>
+      <div class="card-desc">
+        ICP locked. Voice samples loaded. Won't-touch rules captured. Source connectors confirmed. The engine starts taking shape &mdash; tuned to PRmediaNow's reality, not a generic template.
+      </div>
+      <div class="chips"><span class="chip">ICP</span><span class="chip">Voice</span><span class="chip">Sources</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">MILESTONE 2</div>
+      <div class="card-title">Core engine live</div>
+      <div class="card-desc">
+        Enrichment pipeline runs against real intent signals. Scoring rubric calibrated against PRmediaNow's existing engagement patterns. First end-to-end candidate dossier produced from real market data.
+      </div>
+      <div class="chips"><span class="chip">Enrichment</span><span class="chip">Scoring</span><span class="chip">First Dossier</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">MILESTONE 3</div>
+      <div class="card-title">First briefing ships</div>
+      <div class="card-desc">
+        The biweekly briefing email lands in PRmediaNow's inbox every other Monday. The visibility dashboard goes live at <code style="font-size: 12px; background: var(--chip-bg); padding: 1px 4px; border-radius: 3px;">prmn.tridentrise.com</code>. Reply commands &mdash; CHASE / KILL / LATER &mdash; capture feedback that retunes the engine.
+      </div>
+      <div class="chips"><span class="chip">Live</span><span class="chip">Dashboard</span><span class="chip">Feedback</span></div>
+    </div>
+  </div>
+
+  <div class="block" style="margin-top: 22px;">
+    <div class="block-title">After the build &mdash; two paths</div>
+    <div class="two-col">
+      <div class="col-block">
+        <h4>PATH A &mdash; Run it in-house</h4>
+        <p>PRmediaNow takes the runbook, the configured engine, and operates it. TridentRise hands over completely and stays available for questions.</p>
+      </div>
+      <div class="col-block">
+        <h4>PATH B &mdash; TridentRise keeps operating it</h4>
+        <p>Monthly tuning, source maintenance, scoring recalibration, monthly performance review. This is "Ongoing Operations" in the build plan's service stages.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <h2>Ready to talk through it?</h2>
+  <p>The hub is a working surface, not a static deck. Anything here can be adjusted as the conversation evolves.</p>
+  <a class="cta-btn" href="mailto:michael@tridentrise.com">Email TridentRise</a>
+</section>
+
+<footer class="footer">
+  <div>PRmediaNow &times; TridentRise Pipeline Hub &middot; 2026</div>
+  <div class="footer-meta">Built by TridentRise Group &middot; <a href="mailto:michael@tridentrise.com">michael@tridentrise.com</a> &middot; <a href="https://tridentrise.com/" target="_blank" rel="noopener">tridentrise.com</a></div>
+</footer>
+
+<script>
+  (function() {
+    const KEY = 'prmn-hub-theme';
+    const root = document.documentElement;
+    const buttons = document.querySelectorAll('[data-theme-set]');
+
+    function apply(mode) {
+      if (mode === 'system') {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        root.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+      } else {
+        root.setAttribute('data-theme', mode);
+      }
+      buttons.forEach(b => b.classList.toggle('active', b.dataset.themeSet === mode));
+    }
+
+    buttons.forEach(b => b.addEventListener('click', () => {
+      const mode = b.dataset.themeSet;
+      localStorage.setItem(KEY, mode);
+      apply(mode);
+    }));
+
+    const saved = localStorage.getItem(KEY) || 'system';
+    apply(saved);
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+      const current = localStorage.getItem(KEY) || 'system';
+      if (current === 'system') apply('system');
+    });
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 920 520" xmlns="http://www.w3.org/2000/svg" role="img" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif">
+  <title>PRMN Engine - Workflow</title>
+  <desc>Intent signals from public sources flow through a four-step engine (detect, research, score, compose) into a three-times-a-week briefing email delivered to PRMN. Replies retune the engine for the next cycle.</desc>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="arrow-fb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0f766e"/>
+    </marker>
+  </defs>
+
+  <rect width="920" height="520" fill="#ffffff"/>
+
+  <!-- Stage labels -->
+  <text x="125" y="36" text-anchor="middle" font-size="11" font-weight="700" fill="#6b7280" letter-spacing="2.5">INTENT SIGNALS</text>
+  <text x="470" y="36" text-anchor="middle" font-size="11" font-weight="700" fill="#6b7280" letter-spacing="2.5">ENGINE</text>
+  <text x="815" y="36" text-anchor="middle" font-size="11" font-weight="700" fill="#6b7280" letter-spacing="2.5">DELIVERY</text>
+
+  <!-- Source boxes -->
+  <g fill="#111827">
+    <rect x="40" y="60" width="170" height="56" rx="6" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+    <text x="125" y="82" text-anchor="middle" font-size="13" font-weight="600">Press release wires</text>
+    <text x="125" y="100" text-anchor="middle" font-size="11" fill="#6b7280">IR firm hires, agency</text>
+    <text x="125" y="113" text-anchor="middle" font-size="11" fill="#6b7280">engagements</text>
+
+    <rect x="40" y="128" width="170" height="56" rx="6" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+    <text x="125" y="150" text-anchor="middle" font-size="13" font-weight="600">Exchange filings</text>
+    <text x="125" y="168" text-anchor="middle" font-size="11" fill="#6b7280">SEDAR+ material</text>
+    <text x="125" y="181" text-anchor="middle" font-size="11" fill="#6b7280">contracts</text>
+
+    <rect x="40" y="196" width="170" height="56" rx="6" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+    <text x="125" y="218" text-anchor="middle" font-size="13" font-weight="600">Broker-paid research</text>
+    <text x="125" y="236" text-anchor="middle" font-size="11" fill="#6b7280">initiations, paid</text>
+    <text x="125" y="249" text-anchor="middle" font-size="11" fill="#6b7280">promotion feeds</text>
+
+    <rect x="40" y="264" width="170" height="56" rx="6" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+    <text x="125" y="286" text-anchor="middle" font-size="13" font-weight="600">Paid YouTube</text>
+    <text x="125" y="304" text-anchor="middle" font-size="11" fill="#6b7280">stock-promotion</text>
+    <text x="125" y="317" text-anchor="middle" font-size="11" fill="#6b7280">channels</text>
+  </g>
+
+  <!-- Engine box -->
+  <rect x="280" y="60" width="380" height="295" rx="8" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.5"/>
+
+  <!-- Engine steps -->
+  <g fill="#111827">
+    <text x="300" y="88" font-size="14" font-weight="700">1. DETECT</text>
+    <text x="300" y="107" font-size="12" fill="#4b5563">Scan public sources for companies actively</text>
+    <text x="300" y="122" font-size="12" fill="#4b5563">spending on awareness right now</text>
+    <line x1="300" y1="137" x2="640" y2="137" stroke="#0f766e" stroke-width="0.7" opacity="0.4"/>
+
+    <text x="300" y="158" font-size="14" font-weight="700">2. RESEARCH</text>
+    <text x="300" y="177" font-size="12" fill="#4b5563">Enrich each candidate with decision-maker,</text>
+    <text x="300" y="192" font-size="12" fill="#4b5563">sector context, recent news, PR coverage</text>
+    <line x1="300" y1="207" x2="640" y2="207" stroke="#0f766e" stroke-width="0.7" opacity="0.4"/>
+
+    <text x="300" y="228" font-size="14" font-weight="700">3. SCORE &amp; RANK</text>
+    <text x="300" y="247" font-size="12" fill="#4b5563">ICP fit × Need × Reach × Timing</text>
+    <text x="300" y="262" font-size="12" fill="#4b5563">Keep the top five; floor at 6/10</text>
+    <line x1="300" y1="277" x2="640" y2="277" stroke="#0f766e" stroke-width="0.7" opacity="0.4"/>
+
+    <text x="300" y="298" font-size="14" font-weight="700">4. COMPOSE</text>
+    <text x="300" y="317" font-size="12" fill="#4b5563">Draft the briefing in PRMN's voice</text>
+    <text x="300" y="332" font-size="12" fill="#4b5563">with a suggested angle per lead</text>
+  </g>
+
+  <!-- Output boxes -->
+  <g fill="#111827">
+    <rect x="720" y="95" width="180" height="100" rx="6" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+    <text x="810" y="120" text-anchor="middle" font-size="14" font-weight="700">PRMN briefing</text>
+    <text x="810" y="142" text-anchor="middle" font-size="12" fill="#4b5563">In your inbox</text>
+    <text x="810" y="159" text-anchor="middle" font-size="12" fill="#4b5563">Every other Monday</text>
+    <text x="810" y="178" text-anchor="middle" font-size="12" fill="#4b5563">Five ranked leads</text>
+
+    <rect x="720" y="220" width="180" height="100" rx="6" fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+    <text x="810" y="245" text-anchor="middle" font-size="14" font-weight="700">PRMN replies</text>
+    <text x="810" y="267" text-anchor="middle" font-size="12" fill="#4b5563">One-word triage</text>
+    <text x="810" y="285" text-anchor="middle" font-size="12" fill="#4b5563">CHASE / KILL / LATER</text>
+    <text x="810" y="303" text-anchor="middle" font-size="12" fill="#4b5563">No portal required</text>
+  </g>
+
+  <!-- Arrows: sources to engine -->
+  <g stroke="#6b7280" stroke-width="1.5" fill="none">
+    <path d="M 212 88 C 240 88, 250 130, 275 145" marker-end="url(#arrow)"/>
+    <path d="M 212 156 C 240 156, 250 165, 275 170" marker-end="url(#arrow)"/>
+    <path d="M 212 224 C 240 224, 250 200, 275 195" marker-end="url(#arrow)"/>
+    <path d="M 212 292 C 240 292, 250 230, 275 215" marker-end="url(#arrow)"/>
+  </g>
+
+  <!-- Arrows: engine to delivery -->
+  <line x1="662" y1="145" x2="714" y2="145" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="662" y1="270" x2="714" y2="270" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Feedback loop -->
+  <path d="M 720 295 Q 470 425 280 295" stroke="#0f766e" stroke-width="2" fill="none" marker-end="url(#arrow-fb)"/>
+  <text x="470" y="450" text-anchor="middle" font-size="13" font-weight="600" fill="#0f766e">Replies retune the engine before the next briefing</text>
+
+  <!-- Footer note -->
+  <text x="470" y="495" text-anchor="middle" font-size="11" fill="#6b7280">TridentRise engine - configured for PRmediaNow</text>
+</svg>
