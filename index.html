@@ -520,8 +520,46 @@
   }
   .footer-meta { margin-top: 6px; font-size: 11px; }
 
+  /* Changelog */
+  .changelog { display: flex; flex-direction: column; gap: 0; }
+  .changelog-row {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 24px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .changelog-row:last-child { border-bottom: none; padding-bottom: 4px; }
+  .changelog-row:first-child { padding-top: 4px; }
+  .changelog-date {
+    font-family: -apple-system, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 1.5px;
+    padding-top: 2px;
+  }
+  .changelog-title {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text-strong);
+    margin-bottom: 8px;
+    letter-spacing: -0.2px;
+  }
+  .changelog-body p {
+    font-family: var(--serif);
+    font-size: 14.5px;
+    color: var(--text);
+    line-height: 1.7;
+    margin: 0 0 10px;
+  }
+  .changelog-body p:last-child { margin-bottom: 0; }
+  .changelog-body strong { color: var(--text-strong); }
+
   @media (max-width: 760px) {
     .grid, .grid-3, .two-col { grid-template-columns: 1fr; }
+    .changelog-row { grid-template-columns: 1fr; gap: 6px; }
     .hero h1 { font-size: 36px; }
     .section { padding: 44px 20px; }
     .hero { padding: 56px 20px 44px; }
@@ -600,6 +638,14 @@
         <h4>SIGNAL 4 &mdash; Broker-paid research initiation</h4>
         <p>Another commercial-spending signal. The company is investing in its capital-markets story.</p>
       </div>
+      <div class="col-block">
+        <h4>SIGNAL 5 &mdash; Conference sponsorship or speaker slot</h4>
+        <p>A paid speaker slot or sponsorship at an investor conference is money spent to stand in front of investors. Same pattern as the four above.</p>
+      </div>
+      <div class="col-block">
+        <h4>SIGNAL 6 &mdash; Government agency award or grant</h4>
+        <p>A DoD Title III award, Canadian Critical Minerals grant, or comparable win brings cash and validation &mdash; plus a ready-made national-media news peg.</p>
+      </div>
     </div>
     <p style="margin-top: 16px;">
       Every cycle, your engine scans the following sources for these signals:
@@ -614,6 +660,11 @@
       <a class="source-btn" href="https://stockhouse.com/" target="_blank" rel="noopener">Stockhouse</a>
       <a class="source-btn" href="https://www.stockwatch.com/" target="_blank" rel="noopener">Stockwatch</a>
       <a class="source-btn" href="https://www.proactiveinvestors.com/" target="_blank" rel="noopener">Proactive Investors</a>
+      <a class="source-btn" href="https://katusaresearch.com/" target="_blank" rel="noopener">Katusa Research</a>
+      <a class="source-btn" href="https://cruxinvestor.com/" target="_blank" rel="noopener">Crux Investor</a>
+      <a class="source-btn" href="https://beavercreekpreciousmetalssummit.com/" target="_blank" rel="noopener">Beaver Creek Summit</a>
+      <a class="source-btn" href="https://metalsinvestorforum.com/" target="_blank" rel="noopener">Metals Investor Forum</a>
+      <a class="source-btn" href="https://sam.gov/" target="_blank" rel="noopener">SAM.gov (US contracts)</a>
     </div>
   </div>
 
@@ -690,26 +741,39 @@
 
 <section class="section">
   <div class="section-head">
-    <h2 class="section-title">Recent briefings</h2>
-    <div class="section-eyebrow">EVERY CYCLE, ARCHIVED HERE</div>
+    <h2 class="section-title">What's new</h2>
+    <div class="section-eyebrow">CHANGELOG &middot; ENGINE UPDATES &amp; CYCLES</div>
   </div>
 
   <div class="block">
-    <div class="block-title">A running record of what the engine has delivered</div>
+    <div class="block-title">A running record of engine improvements and cycle deliveries</div>
     <p>
-      Every biweekly cycle is archived below as a downloadable PDF. Colin receives the same content in his inbox as the primary interaction; this archive is a reference for going back to prior cycles, sharing internally, or reviewing the pattern over time.
+      Every change to the engine and every biweekly cycle is logged below. The <a href="dashboard.html">pipeline dashboard</a> holds the full cycle-by-cycle history, including each briefing PDF.
     </p>
   </div>
 
-  <div class="grid">
-    <div class="card">
-      <div class="card-label">CYCLE #01</div>
-      <div class="card-title">September 1, 2026</div>
-      <div class="card-desc">
-        Six ranked candidates across helium, critical minerals, uranium, battery metals, and lithium. Fresh August 2026 intent signals &mdash; IR firm hires, financing closes, agency engagements, and paid-media placements.
+  <div class="changelog">
+    <div class="changelog-row">
+      <div class="changelog-date">2026-09-22</div>
+      <div class="changelog-body">
+        <div class="changelog-title">Cycle #02 shipped</div>
+        <p>Six new candidates. Open the <a href="dashboard.html">pipeline dashboard</a> for the cumulative view or the <a href="briefings/cycle-02.pdf" target="_blank" rel="noopener">Cycle #02 PDF</a> directly.</p>
       </div>
-      <div class="chips"><span class="chip">6 leads</span><span class="chip">Helium &middot; Uranium &middot; Battery</span><span class="chip">Aug 2026 signals</span></div>
-      <a class="card-link" href="briefings/cycle-01.pdf" target="_blank" rel="noopener">&rarr; Open Cycle #01 PDF</a>
+    </div>
+    <div class="changelog-row">
+      <div class="changelog-date">2026-09-22</div>
+      <div class="changelog-body">
+        <div class="changelog-title">Two new intent-signal sources added</div>
+        <p><strong>What:</strong> conference sponsorships and speaker slots (Beaver Creek Precious Metals Summit, Metals Investor Forum, Denver Gold Forum, PDAC), and government agency awards (DoD Title III, Defense Production Act, Canadian Critical Minerals Infrastructure Fund).</p>
+        <p><strong>Why:</strong> both are stronger versions of the pattern the engine already looks for. A paid speaker slot at an investor conference is money spent to stand in front of investors &mdash; same tell as an IR firm hire. A DoD or Canadian critical-minerals award brings cash and validation, plus a ready-made national-media news peg. Every future cycle scans these two sources alongside the original four signals.</p>
+      </div>
+    </div>
+    <div class="changelog-row">
+      <div class="changelog-date">2026-09-01</div>
+      <div class="changelog-body">
+        <div class="changelog-title">Engine went live &middot; Cycle #01 shipped</div>
+        <p>Six candidates delivered across helium, critical minerals, uranium, battery metals, and lithium &mdash; the first operating cycle of the PRmediaNow pipeline channel. <a href="briefings/cycle-01.pdf" target="_blank" rel="noopener">Cycle #01 PDF</a>.</p>
+      </div>
     </div>
   </div>
 </section>
